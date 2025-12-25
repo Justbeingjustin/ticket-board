@@ -1,0 +1,84 @@
+# Git Kanban - Local Ticket Board
+
+This is a Next.js kanban board application that stores tickets as markdown files in the `tickets/` directory.
+
+## Project Structure
+
+- `src/app/` - Next.js app router pages and API routes
+- `src/components/` - React components including kanban board, ticket modals
+- `src/lib/` - Utilities, types, hooks, and server-side logic
+- `tickets/` - Ticket markdown files organized by board slug
+- `public/` - Static assets (screenshots can be placed here)
+
+## Ticket System
+
+### Ticket Files
+Tickets are stored as markdown files in `tickets/{board-slug}/` with YAML frontmatter:
+
+```yaml
+---
+id: T-XXXXXXXXXX
+board: main
+title: Ticket Title
+status: backlog | in-progress | review | done
+createdAt: 'ISO date'
+updatedAt: 'ISO date'
+owner: user_1
+order: number
+comments:
+  - id: c_timestamp
+    author: bot | user_1
+    text: 'Comment text'
+    createdAt: 'ISO date'
+---
+<p>HTML body content</p>
+```
+
+### Valid Statuses (Column IDs)
+- `backlog` - Not started
+- `in-progress` - Currently being worked on (NOTE: hyphen, not underscore!)
+- `review` - Ready for review
+- `done` - Completed
+
+### Adding Comments
+Comments are stored in the YAML frontmatter as an array:
+```yaml
+comments:
+  - id: c_1735166800
+    author: bot
+    text: 'What was done'
+    createdAt: '2025-12-25T22:26:40.000Z'
+```
+
+### Adding Screenshots
+1. Save screenshot to `public/` folder
+2. Reference in ticket body: `<img src="/filename.png" alt="description" />`
+
+## Bot Workflow for Completing Tickets
+
+When asked to "work on tickets" or "complete tasks":
+
+1. **Read**: List files in `tickets/main/` to find backlog tickets
+2. **Claim**: Update `status: in-progress` in the ticket file
+3. **Understand**: Read the ticket body to understand the task
+4. **Implement**: Make the code changes
+5. **Test**: Use browser tools to verify the fix works
+6. **Document**: 
+   - Take screenshot if visual change
+   - Save to `public/` folder
+   - Add comment to ticket YAML
+   - Add screenshot img tag to body if applicable
+7. **Complete**: Update `status: review`
+
+## Key Files
+
+- `src/components/ticket-detail.tsx` - Ticket edit modal
+- `src/components/kanban-board.tsx` - Main board component
+- `src/lib/constants.ts` - Board configuration, column definitions
+- `src/lib/types.ts` - TypeScript interfaces for Ticket, Comment, etc.
+- `src/lib/server/tickets.ts` - Server-side ticket CRUD operations
+
+## Dev Server
+
+The app runs on `http://localhost:3000` with `npm run dev`
+

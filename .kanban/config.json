@@ -1,0 +1,61 @@
+{
+  "boards": [
+    {
+      "id": "board_1",
+      "name": "Main",
+      "slug": "main",
+      "columns": [
+        {
+          "id": "backlog",
+          "name": "Backlog"
+        },
+        {
+          "id": "in-progress",
+          "name": "In Progress"
+        },
+        {
+          "id": "review",
+          "name": "Review"
+        },
+        {
+          "id": "done",
+          "name": "Done"
+        }
+      ]
+    }
+  ],
+  "priorities": [
+    {
+      "id": "critical",
+      "name": "Critical",
+      "color": "#ef4444"
+    },
+    {
+      "id": "high",
+      "name": "High",
+      "color": "#f97316"
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "color": "#eab308"
+    },
+    {
+      "id": "low",
+      "name": "Low",
+      "color": "#3b82f6"
+    }
+  ],
+  "users": [
+    {
+      "id": "user_1",
+      "name": "Justin",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Justin"
+    },
+    {
+      "id": "bot",
+      "name": "Bot",
+      "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=Bot"
+    }
+  ]
+}
