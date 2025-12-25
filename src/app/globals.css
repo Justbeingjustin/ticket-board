@@ -292,3 +292,64 @@
 .tiptap em {
   font-style: italic;
 }
+
+/* Snowflakes Animation */
+.snowflakes-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  color: #fff;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(173, 216, 230, 0.5);
+  animation: snowfall linear infinite;
+  user-select: none;
+  font-size: inherit;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light theme snowflakes */
+:root .snowflake {
+  color: #a8d4ff;
+  text-shadow: 
+    0 0 5px rgba(168, 212, 255, 0.8),
+    0 0 10px rgba(100, 149, 237, 0.5);
+}
+
+/* Dark theme snowflakes */
+.dark .snowflake {
+  color: #ffffff;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(173, 216, 230, 0.6);
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(25vh) translateX(calc(var(--drift) * 0.5)) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(var(--drift)) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(calc(var(--drift) * 0.5)) rotate(270deg);
+  }
+  100% {
+    transform: translateY(110vh) translateX(0) rotate(360deg);
+  }
+}
