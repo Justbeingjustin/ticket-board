@@ -293,8 +293,8 @@
   font-style: italic;
 }
 
-/* Snowflakes Animation */
-.snowflakes-container {
+/* Holiday Effects Animation */
+.holiday-effects-container {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -304,39 +304,63 @@
   z-index: 9999;
 }
 
-.snowflake {
+.holiday-particle {
   position: absolute;
-  top: -20px;
-  color: #fff;
-  text-shadow: 
-    0 0 5px rgba(255, 255, 255, 0.8),
-    0 0 10px rgba(173, 216, 230, 0.5);
-  animation: snowfall linear infinite;
+  top: -40px;
+  animation: holiday-fall linear infinite;
   user-select: none;
-  font-size: inherit;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Light theme snowflakes */
-:root .snowflake {
-  color: #a8d4ff;
-  text-shadow: 
-    0 0 5px rgba(168, 212, 255, 0.8),
-    0 0 10px rgba(100, 149, 237, 0.5);
+/* Christmas Snowflakes */
+.holiday-christmas {
+  filter: drop-shadow(0 0 5px rgba(173, 216, 230, 0.8));
 }
 
-/* Dark theme snowflakes */
-.dark .snowflake {
-  color: #ffffff;
-  text-shadow: 
-    0 0 5px rgba(255, 255, 255, 0.8),
-    0 0 10px rgba(173, 216, 230, 0.6);
+:root .holiday-christmas {
+  filter: drop-shadow(0 0 5px rgba(100, 149, 237, 0.6))
+          drop-shadow(0 0 10px rgba(168, 212, 255, 0.4));
 }
 
-@keyframes snowfall {
+.dark .holiday-christmas {
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
+          drop-shadow(0 0 10px rgba(173, 216, 230, 0.6));
+}
+
+/* Halloween Pumpkins */
+.holiday-halloween {
+  filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.6));
+}
+
+:root .holiday-halloween {
+  filter: drop-shadow(0 0 6px rgba(255, 140, 0, 0.5))
+          drop-shadow(0 0 12px rgba(255, 69, 0, 0.3));
+}
+
+.dark .holiday-halloween {
+  filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.7))
+          drop-shadow(0 0 15px rgba(255, 100, 0, 0.5));
+}
+
+/* Easter Eggs */
+.holiday-easter {
+  filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.6));
+}
+
+:root .holiday-easter {
+  filter: drop-shadow(0 0 5px rgba(152, 251, 152, 0.5))
+          drop-shadow(0 0 10px rgba(255, 182, 193, 0.4));
+}
+
+.dark .holiday-easter {
+  filter: drop-shadow(0 0 6px rgba(255, 218, 185, 0.6))
+          drop-shadow(0 0 12px rgba(173, 216, 230, 0.4));
+}
+
+@keyframes holiday-fall {
   0% {
     transform: translateY(0) translateX(0) rotate(0deg);
   }
