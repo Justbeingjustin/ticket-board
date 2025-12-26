@@ -1,6 +1,6 @@
 'use client';
 
-import { Settings, Check, Sun, Moon, Monitor } from 'lucide-react';
+import { Settings, Check, Sun, Moon, Monitor, Snowflake } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,12 +14,14 @@ import {
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useColorTheme, colorThemes, type ColorTheme } from '@/lib/hooks/use-color-theme';
+import { useSnow } from '@/lib/hooks/use-snow';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
 export function SettingsPanel() {
   const { theme, setTheme } = useTheme();
   const { colorTheme, setColorTheme, mounted } = useColorTheme();
+  const { snowEnabled, setSnowEnabled, mounted: snowMounted } = useSnow();
   const [themeMounted, setThemeMounted] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function SettingsPanel() {
     { id: 'system', name: 'System', icon: Monitor },
   ];
 
-  if (!mounted || !themeMounted) {
+  if (!mounted || !themeMounted || !snowMounted) {
     return (
       <Button variant="ghost" size="icon" className="w-9 h-9">
         <Settings className="h-4 w-4" />
@@ -120,9 +122,46 @@ export function SettingsPanel() {
               })}
             </div>
           </div>
+
+          <Separator />
+
+          {/* Effects Section */}
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Effects</Label>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className={cn(
+                  'p-2 rounded-lg',
+                  snowEnabled ? 'bg-primary/10' : 'bg-muted'
+                )}>
+                  <Snowflake className={cn(
+                    'h-5 w-5',
+                    snowEnabled ? 'text-primary' : 'text-muted-foreground'
+                  )} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">Snow Effect</span>
+                  <span className="text-xs text-muted-foreground">Show falling snowflakes</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSnowEnabled(!snowEnabled)}
+                className={cn(
+                  'relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer',
+                  snowEnabled ? 'bg-primary' : 'bg-muted-foreground/30'
+                )}
+              >
+                <span
+                  className={cn(
+                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm',
+                    snowEnabled ? 'translate-x-6' : 'translate-x-1'
+                  )}
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
   );
 }
-
