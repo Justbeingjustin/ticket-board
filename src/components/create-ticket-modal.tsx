@@ -142,7 +142,7 @@ export function CreateTicketModal({
               <Select value={priority} onValueChange={setPriority}>
                 <SelectTrigger>
                   {selectedPriority ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 pointer-events-none">
                       <div
                         className="w-2 h-2 rounded-full"
                         style={{ backgroundColor: selectedPriority.color }}
@@ -174,7 +174,9 @@ export function CreateTicketModal({
               <Select value={owner} onValueChange={setOwner}>
                 <SelectTrigger>
                   {selectedOwner ? (
-                    <UserAvatar user={selectedOwner} size="sm" showName />
+                    <div className="pointer-events-none">
+                      <UserAvatar user={selectedOwner} size="sm" showName />
+                    </div>
                   ) : (
                     <SelectValue placeholder="Unassigned" />
                   )}
