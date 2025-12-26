@@ -219,7 +219,8 @@ export function TicketDetail({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Untitled ticket"
-                className="w-full text-2xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/40 focus:placeholder:text-muted-foreground/20 caret-primary"
+                title={title}
+                className="w-full text-2xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/40 focus:placeholder:text-muted-foreground/20 caret-primary overflow-hidden text-ellipsis whitespace-nowrap"
               />
             </div>
 
