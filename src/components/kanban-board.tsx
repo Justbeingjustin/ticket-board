@@ -323,7 +323,7 @@ export function KanbanBoard({
               className="w-64 pl-9"
             />
           </div>
-          <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleOpenCreateModal()}>
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleOpenCreateModal()}>
             <Sparkles className="w-4 h-4 mr-2" />
             New Ticket
           </Button>
