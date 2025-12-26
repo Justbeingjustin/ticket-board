@@ -1,6 +1,6 @@
 'use client';
 
-import { Settings, Check, Sun, Moon, Monitor, Snowflake } from 'lucide-react';
+import { Settings, Check, Sun, Moon, Monitor, Sparkles } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,18 +14,21 @@ import {
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useColorTheme, colorThemes, type ColorTheme } from '@/lib/hooks/use-color-theme';
-import { useSnow } from '@/lib/hooks/use-snow';
+import { useHolidayEffects } from '@/lib/hooks/use-holiday-effects';
+import { getHolidayInfo } from '@/components/holiday-effects';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
 export function SettingsPanel() {
   const { theme, setTheme } = useTheme();
   const { colorTheme, setColorTheme, mounted } = useColorTheme();
-  const { snowEnabled, setSnowEnabled, mounted: snowMounted } = useSnow();
+  const { holidayEffectsEnabled, setHolidayEffectsEnabled, mounted: holidayMounted } = useHolidayEffects();
   const [themeMounted, setThemeMounted] = useState(false);
+  const [holidayInfo, setHolidayInfo] = useState({ type: null as string | null, emoji: '', name: '' });
 
   useEffect(() => {
     setThemeMounted(true);
+    setHolidayInfo(getHolidayInfo());
   }, []);
 
   const appearanceOptions = [
@@ -34,7 +37,7 @@ export function SettingsPanel() {
     { id: 'system', name: 'System', icon: Monitor },
   ];
 
-  if (!mounted || !themeMounted || !snowMounted) {
+  if (!mounted || !themeMounted || !holidayMounted) {
     return (
       <Button variant="ghost" size="icon" className="w-9 h-9">
         <Settings className="h-4 w-4" />
@@ -127,34 +130,36 @@ export function SettingsPanel() {
 
           {/* Effects Section */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium">Effects</Label>
+            <Label className="text-sm font-medium">Holiday Effects</Label>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className={cn(
                   'p-2 rounded-lg',
-                  snowEnabled ? 'bg-primary/10' : 'bg-muted'
+                  holidayEffectsEnabled ? 'bg-primary/10' : 'bg-muted'
                 )}>
-                  <Snowflake className={cn(
+                  <Sparkles className={cn(
                     'h-5 w-5',
-                    snowEnabled ? 'text-primary' : 'text-muted-foreground'
+                    holidayEffectsEnabled ? 'text-primary' : 'text-muted-foreground'
                   )} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium">Snow Effect</span>
-                  <span className="text-xs text-muted-foreground">Show falling snowflakes</span>
+                  <span className="text-sm font-medium">Holiday Effects</span>
+                  <span className="text-xs text-muted-foreground">
+                    {holidayInfo.type ? `Showing ${holidayInfo.name} ${holidayInfo.emoji}` : 'Seasonal falling particles'}
+                  </span>
                 </div>
               </div>
               <button
-                onClick={() => setSnowEnabled(!snowEnabled)}
+                onClick={() => setHolidayEffectsEnabled(!holidayEffectsEnabled)}
                 className={cn(
                   'relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer',
-                  snowEnabled ? 'bg-primary' : 'bg-muted-foreground/30'
+                  holidayEffectsEnabled ? 'bg-primary' : 'bg-muted-foreground/30'
                 )}
               >
                 <span
                   className={cn(
                     'inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm',
-                    snowEnabled ? 'translate-x-6' : 'translate-x-1'
+                    holidayEffectsEnabled ? 'translate-x-6' : 'translate-x-1'
                   )}
                 />
               </button>
