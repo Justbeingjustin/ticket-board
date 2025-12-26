@@ -12,11 +12,39 @@ interface Snowflake {
   drift: number;
 }
 
+const STORAGE_KEY = 'kanban-snow-enabled';
+
 export function Snowflakes() {
   const [snowflakes, setSnowflakes] = useState<Snowflake[]>([]);
+  const [enabled, setEnabled] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Generate snowflakes on client-side only
+    setMounted(true);
+    // Read initial setting from localStorage
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored !== null) {
+      setEnabled(stored === 'true');
+    }
+
+    // Listen for setting changes from the settings panel
+    const handleSettingChange = (event: CustomEvent<boolean>) => {
+      setEnabled(event.detail);
+    };
+
+    window.addEventListener('snow-setting-changed', handleSettingChange as EventListener);
+    return () => {
+      window.removeEventListener('snow-setting-changed', handleSettingChange as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !enabled) {
+      setSnowflakes([]);
+      return;
+    }
+
+    // Generate snowflakes on client-side only when enabled
     const flakes: Snowflake[] = Array.from({ length: 50 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
@@ -27,9 +55,9 @@ export function Snowflakes() {
       drift: -20 + Math.random() * 40,
     }));
     setSnowflakes(flakes);
-  }, []);
+  }, [mounted, enabled]);
 
-  if (snowflakes.length === 0) return null;
+  if (!mounted || !enabled || snowflakes.length === 0) return null;
 
   return (
     <div className="snowflakes-container">
@@ -53,4 +81,3 @@ export function Snowflakes() {
     </div>
   );
 }
-
