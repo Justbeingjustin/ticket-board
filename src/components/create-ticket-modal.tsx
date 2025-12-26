@@ -50,16 +50,16 @@ export function CreateTicketModal({
 }: CreateTicketModalProps) {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState(defaultStatus || columns[0]?.id || '');
-  const [owner, setOwner] = useState('');
-  const [priority, setPriority] = useState('');
+  const [owner, setOwner] = useState(users[0]?.id || '');
+  const [priority, setPriority] = useState('critical');
   const [body, setBody] = useState('');
   const [creating, setCreating] = useState(false);
 
   const resetForm = () => {
     setTitle('');
     setStatus(defaultStatus || columns[0]?.id || '');
-    setOwner('');
-    setPriority('');
+    setOwner(users[0]?.id || '');
+    setPriority('critical');
     setBody('');
   };
 
