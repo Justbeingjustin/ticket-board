@@ -127,7 +127,7 @@ export function TicketDetail({
   const handleCopyLink = async () => {
     if (!ticket) return;
     try {
-      await navigator.clipboard.writeText(ticket.id);
+      await navigator.clipboard.writeText(`/work-ticket ${ticket.id}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
@@ -211,8 +211,9 @@ export function TicketDetail({
                 <button
                   onClick={handleCopyLink}
                   className="text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  title="Copy command to paste in Cursor/IDE"
                 >
-                  {copied ? '✓ Copied' : 'Copy ID'}
+                  {copied ? '✓ Copied to clipboard' : 'Copy for Cursor/IDE'}
                 </button>
               </div>
               <input
