@@ -48,18 +48,22 @@ export function CreateTicketModal({
   defaultStatus,
   onCreate,
 }: CreateTicketModalProps) {
+  // Default priority to 'high' and owner to 'bot' (user_1)
+  const defaultPriority = 'high';
+  const defaultOwner = 'bot';
+  
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState(defaultStatus || columns[0]?.id || '');
-  const [owner, setOwner] = useState('');
-  const [priority, setPriority] = useState('');
+  const [owner, setOwner] = useState(defaultOwner);
+  const [priority, setPriority] = useState(defaultPriority);
   const [body, setBody] = useState('');
   const [creating, setCreating] = useState(false);
 
   const resetForm = () => {
     setTitle('');
     setStatus(defaultStatus || columns[0]?.id || '');
-    setOwner('');
-    setPriority('');
+    setOwner(defaultOwner);
+    setPriority(defaultPriority);
     setBody('');
   };
 
