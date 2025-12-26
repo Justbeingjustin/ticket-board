@@ -50,7 +50,7 @@ export function CreateTicketModal({
 }: CreateTicketModalProps) {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState(defaultStatus || columns[0]?.id || '');
-  const [owner, setOwner] = useState(users[0]?.id || '');
+  const [owner, setOwner] = useState('bot');
   const [priority, setPriority] = useState('critical');
   const [body, setBody] = useState('');
   const [creating, setCreating] = useState(false);
@@ -58,7 +58,7 @@ export function CreateTicketModal({
   const resetForm = () => {
     setTitle('');
     setStatus(defaultStatus || columns[0]?.id || '');
-    setOwner(users[0]?.id || '');
+    setOwner('bot');
     setPriority('critical');
     setBody('');
   };
@@ -93,7 +93,7 @@ export function CreateTicketModal({
   const selectedOwner = users.find(u => u.id === owner);
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={handleClose} modal={false}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Create New Ticket</DialogTitle>
@@ -140,17 +140,16 @@ export function CreateTicketModal({
                 Priority <span className="text-red-500">*</span>
               </Label>
               <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger>
-                  {selectedPriority ? (
-                    <div className="flex items-center gap-2 pointer-events-none">
+                <SelectTrigger className="relative">
+                  <SelectValue placeholder="Select priority" />
+                  {selectedPriority && (
+                    <div className="absolute inset-0 flex items-center gap-2 px-3 pointer-events-none bg-transparent">
                       <div
                         className="w-2 h-2 rounded-full"
                         style={{ backgroundColor: selectedPriority.color }}
                       />
-                      {selectedPriority.name}
+                      <span>{selectedPriority.name}</span>
                     </div>
-                  ) : (
-                    <SelectValue placeholder="Select priority" />
                   )}
                 </SelectTrigger>
                 <SelectContent>
@@ -172,13 +171,12 @@ export function CreateTicketModal({
             <div className="space-y-2">
               <Label>Assign To</Label>
               <Select value={owner} onValueChange={setOwner}>
-                <SelectTrigger>
-                  {selectedOwner ? (
-                    <div className="pointer-events-none">
+                <SelectTrigger className="relative">
+                  <SelectValue placeholder="Unassigned" />
+                  {selectedOwner && (
+                    <div className="absolute inset-0 flex items-center px-3 pointer-events-none bg-transparent">
                       <UserAvatar user={selectedOwner} size="sm" showName />
                     </div>
-                  ) : (
-                    <SelectValue placeholder="Unassigned" />
                   )}
                 </SelectTrigger>
                 <SelectContent>
