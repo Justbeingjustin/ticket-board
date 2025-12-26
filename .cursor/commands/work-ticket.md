@@ -35,8 +35,15 @@ npm run dev &
 ```
 - Note: Dev server will run on a different port if 3000 is taken (check output)
 
-### 4. Move Ticket to In Progress
-- Update the ticket file's `status` field to `in-progress`
+### 4. Move Ticket to In Progress (in MAIN repo)
+- **IMPORTANT**: Update the ticket file in the MAIN repo (not the worktree)
+- Change `status` field to `in-progress` in the ticket file at `tickets/main/{ticket-id}.md`
+- Commit this change to the main branch:
+```bash
+git add tickets/main/{ticket-id}.md
+git commit -m "chore: move {ticket-id} to in-progress"
+git push origin main
+```
 - Valid statuses are: `backlog`, `in-progress`, `review`, `done`
 
 ### 5. Understand the Task
@@ -53,22 +60,10 @@ npm run dev &
 - Test that the fix works as expected
 - Take a screenshot showing the fix working
 
-### 8. Add Comment with Screenshot
-- Save screenshot to `public/` folder in the worktree
-- Update the ticket file to add a comment in YAML frontmatter
-- **IMPORTANT**: Do NOT modify the ticket body/description - only add comments
-
-Comment format:
-```yaml
-comments:
-  - id: c_{timestamp}
-    author: bot
-    text: '<p>Description of what was done</p><img src="/screenshot-name.png" alt="Description" />'
-    createdAt: '{ISO date string}'
-```
-
-### 9. Commit Changes
-- Stage and commit all changes in the worktree:
+### 8. Save Screenshot & Commit Code Changes
+- Save screenshot to `public/` folder in the MAIN repo (not worktree)
+- Copy screenshot to worktree's `public/` folder so it's included in PR
+- Commit all code changes in the worktree (including screenshot):
 ```bash
 cd ../worktrees/{ticket-id}
 git add -A
@@ -79,7 +74,7 @@ git commit -m "feat({ticket-id}): {brief description}
 Ticket: {ticket-id}"
 ```
 
-### 10. Push Branch & Create PR
+### 9. Push Branch & Create PR
 - Push the feature branch:
 ```bash
 git push -u origin feature/{ticket-id}
@@ -101,13 +96,34 @@ gh pr create --title "{ticket-title}" --body "## Summary
 ```
 - If `gh` is not available, provide the PR URL for manual creation
 
-### 11. Update Ticket Status
+### 10. Update Ticket Status & Add Comment (in MAIN repo)
+- **IMPORTANT**: Update the ticket file in the MAIN repo (not the worktree)
 - Update ticket `status` to `review`
-- Add the PR URL to the ticket comment
+- Add comment with screenshot and PR link to the ticket YAML frontmatter
 
-### 12. Cleanup (Optional)
+Comment format:
+```yaml
+comments:
+  - id: c_{timestamp}
+    author: bot
+    text: '<p>Description of what was done</p><img src="/screenshot-name.png" alt="Screenshot" /><p>PR: {pr-url}</p>'
+    createdAt: '{ISO date string}'
+```
+
+- Commit and push this change to main:
+```bash
+git add tickets/main/{ticket-id}.md
+git commit -m "chore: update {ticket-id} to review with screenshot"
+git push origin main
+```
+
+### 11. Cleanup (Optional)
 - Stop the dev server in the worktree
-- Optionally remove the worktree after PR is merged:
+- After PR is merged on GitHub, pull changes in main repo:
+```bash
+git pull origin main
+```
+- Remove the worktree:
 ```bash
 git worktree remove ../worktrees/{ticket-id}
 git branch -d feature/{ticket-id}
@@ -168,6 +184,9 @@ comments:
 
 ## Notes
 
+- **Ticket updates always happen in the MAIN repo on the main branch**
+- **Code changes always happen in the WORKTREE on the feature branch**
+- This separation prevents merge conflicts when pulling after PR merge
 - Each ticket gets its own isolated branch and worktree
 - Changes are committed and pushed as a PR for review
 - The main repo stays clean on the main branch
